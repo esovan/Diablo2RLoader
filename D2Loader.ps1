@@ -1,10 +1,10 @@
 <# 
-Author: Shupershuff
+Author: esovan
 Usage: Go nuts.
 Purpose:
 	Script will allow opening multiple Diablo 2 resurrected instances and will automatically close the 'DiabloII Check For Other Instances' handle."
 	Script will import account details from CSV. Alternatively you can run script with account, region and password parameters.
-Instructions: See GitHub readme https://github.com/shupershuff/Diablo2RLoader
+Instructions: See GitHub readme https://github.com/esovan/Diablo2RLoader
 
 #########
 # Notes #
@@ -66,12 +66,12 @@ $script:WorkingDirectory = ((Get-ChildItem -Path $PSScriptRoot)[0].fullname).sub
 
 #Check for updates
 try {
-	$tagList = Invoke-RestMethod "https://api.github.com/repos/Shupershuff/Diablo2RLoader/tags" -erroraction stop
+	$tagList = Invoke-RestMethod "https://api.github.com/repos/esovan/Diablo2RLoader/tags" -erroraction stop
 	if ([version[]]$taglist.Name.Trim('v') -gt $Script:CurrentVersion) {
-		$releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/shupershuff/Diablo2RLoader/releases/latest"
+		$releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/esovan/Diablo2RLoader/releases/latest"
 		Write-Host
 		Write-Host " Update available! See Github for latest version and info:" -foregroundcolor Yellow
-		write-host " $x[38;2;69;155;245;4mhttps://github.com/shupershuff/Diablo2RLoader/releases/latest$x[0m"
+		write-host " $x[38;2;69;155;245;4mhttps://github.com/esovan/Diablo2RLoader/releases/latest$x[0m"
 		Write-Host
 		Write-Host $releaseInfo.body
 		Write-Host
@@ -86,12 +86,12 @@ try {
 		} Until ($UpdateResponseValid -eq $True)
 		if ($ShouldUpdate -eq "y" -or $ShouldUpdate -eq "yes"){#if user wants to update script, download .zip of latest release, extract to temporary folder and replace old D2Loader.ps1 with new D2Loader.ps1
 			New-Item -ItemType Directory -Path ($script:WorkingDirectory + "\UpdateTemp\") | Out-Null #create temporary folder to download zip to and extract
-			$zipUrl = $releaseInfo.zipball_url #get zip download URL	
+			$zipUrl = $releaseInfo.zipball_url #get zip download URL
 			$zipPath = ($WorkingDirectory + "\UpdateTemp\D2Loader_" + $releaseInfo.tag_name + "_temp.zip")
 			Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
 			$extractPath = ($script:WorkingDirectory + "\UpdateTemp\")
 			Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
-			$FolderPath = Get-ChildItem -Path $extractPath -Directory -Filter "shupershuff*" | Select-Object -ExpandProperty FullName
+			$FolderPath = Get-ChildItem -Path $extractPath -Directory -Filter "esovan*" | Select-Object -ExpandProperty FullName
 			($FolderPath + "\D2Loader.ps1")
 			($script:WorkingDirectory + "D2Loaders.ps1")
 			Copy-Item -Path ($FolderPath + "\D2Loader.ps1") -Destination ($script:WorkingDirectory + "\D2Loader.ps1")
@@ -183,7 +183,7 @@ foreach ($option in $AvailableConfigs){
 if ($option -notin $ConfigXMLlist){
 	write-host
 	write-host "Make sure to grab the latest version of config.xml from GitHub" -foregroundcolor yellow
-	write-host " $x[38;2;69;155;245;4mhttps://github.com/shupershuff/Diablo2RLoader/releases/latest$x[0m"
+	write-host " $x[38;2;69;155;245;4mhttps://github.com/esovan/Diablo2RLoader/releases/latest$x[0m"
 	write-host
 	pause
 }
@@ -484,7 +484,7 @@ Function Dclone {
 	$headers = @{
 		"D2R-Contact" = "placeholderemail@email.com"
 		"D2R-Platform" = "GitHub"
-		"D2R-Repo" = "https://github.com/shupershuff/Diablo2RLoader"
+		"D2R-Repo" = "https://github.com/esovan/Diablo2RLoader"
 	}
 	$uri = "https://d2runewizard.com/api/diablo-clone-progress/all?token=Pzttbnf1LduTScqauozCLQ"
 	$D2RWDCloneResponse = Invoke-RestMethod -Uri $uri -Method GET -header $headers
@@ -568,7 +568,7 @@ function TerrorZone {
 	#$headers = @{
 	#	"D2R-Contact" = "placeholderemail@email.com"
 	#	"D2R-Platform" = "GitHub"
-	#	"D2R-Repo" = "https://github.com/shupershuff/Diablo2RLoader"
+	#	"D2R-Repo" = "https://github.com/esovan/Diablo2RLoader"
 	#}
 	#$uri = "https://d2runewizard.com/api/terror-zone?token=Pzttbnf1LduTScqauozCLQ"
 	#$D2RWTZResponse = Invoke-RestMethod -Uri $uri -Method GET -header $headers
